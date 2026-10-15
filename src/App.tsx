@@ -8,6 +8,7 @@ import { Identifier, ThemeProvider } from '@bootnodedev/canton-dappbooster'
 import { WalletButton } from '@bootnodedev/canton-dappbooster/connect'
 import { RemoteAdapter } from '@canton-network/dapp-sdk'
 import type { ReactElement } from 'react'
+import { NoteForm } from './components/NoteForm'
 
 // The mock wallet answers the connect flow and nothing else, so the app runs before a real
 // wallet is reachable. A Wallet Gateway is listed when .env names one. See .env.example.
@@ -46,6 +47,7 @@ export const App = (): ReactElement => (
         <h1>Notes</h1>
         <WalletButton />
         <Session />
+        <NoteForm />
       </main>
     </CantonConnectProvider>
   </ThemeProvider>
