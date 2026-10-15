@@ -1,0 +1,18 @@
+module Note where
+
+-- A line of text one party writes for another.
+-- The author signs it, so only the author can create it.
+-- The reader sees it, and is the only one who can acknowledge it.
+template Note
+  with
+    author : Party
+    reader : Party
+    text : Text
+  where
+    signatory author
+    observer reader
+
+    -- Consuming, so acknowledging archives the note.
+    choice Acknowledge : ()
+      controller reader
+      do pure ()
