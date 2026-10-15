@@ -1,0 +1,19 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.env
+.env.local
+.DS_Store
+
+# DAML build output and the fetched Splice DARs
+daml/.daml/
+daml/deps/
+
+# canton-barebones: its scaffolded config, the Splice checkout and the runtime env
+.canton-localnet/
+
+# dev-stack.sh: logs of the background processes it starts
+.dev-stack/
+
+# wallet-gateway: its sqlite wallet and signing stores
+.wallet-gateway/
