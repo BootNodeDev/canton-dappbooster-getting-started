@@ -18,7 +18,7 @@ const gateway = gatewayUrl
   : []
 
 const connectConfig: CantonConnectConfig = {
-  appName: 'Canton dApp',
+  appName: 'Notes',
   additionalAdapters: [...mockWallet, ...gateway],
 }
 
@@ -43,7 +43,7 @@ export const App = (): ReactElement => (
   <ThemeProvider>
     <CantonConnectProvider config={connectConfig}>
       <main>
-        <h1>Canton dApp</h1>
+        <h1>Notes</h1>
         <WalletButton />
         <Session />
       </main>
