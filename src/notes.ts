@@ -4,7 +4,6 @@ export const NOTE_TEMPLATE_ID = '#notes:Note:Note'
 
 export type Note = {
   author: string
-  contractId: string
   reader: string
   text: string
 }
@@ -27,52 +26,20 @@ export const acknowledgeCommand = (contractId: string) => ({
   },
 })
 
-// The active-contracts read: every Note the party is a stakeholder of, at the given offset.
-export const notesRequest = (partyId: string, offset: string | number) => ({
-  requestMethod: 'post' as const,
-  resource: '/v2/state/active-contracts',
-  body: {
-    filter: {
-      filtersByParty: {
-        [partyId]: {
-          cumulative: [
-            { identifierFilter: { TemplateFilter: { value: { templateId: NOTE_TEMPLATE_ID } } } },
-          ],
-        },
-      },
-    },
-    activeAtOffset: offset,
-    verbose: true,
-  },
-})
-
-type AcsRow = {
-  contractEntry?: {
-    JsActiveContract?: {
-      createdEvent?: {
-        contractId?: string
-        createArgument?: { author?: string; reader?: string; text?: string }
-      }
-    }
+export const toNote = (createArgument: unknown): Note | undefined => {
+  if (typeof createArgument !== 'object' || createArgument === null) {
+    return undefined
   }
-}
-
-export const toNotes = (rows: unknown): Note[] => {
-  if (!Array.isArray(rows)) return []
-
-  return (rows as AcsRow[]).flatMap((row) => {
-    const created = row.contractEntry?.JsActiveContract?.createdEvent
-    const { author, reader, text } = created?.createArgument ?? {}
-
-    if (
-      created?.contractId === undefined ||
-      author === undefined ||
-      reader === undefined ||
-      text === undefined
-    ) {
-      return []
-    }
-
-    return [{ author, contractId: created.contractId, reader, text }]
-  })
+  if (
+    !('author' in createArgument) ||
+    !('reader' in createArgument) ||
+    !('text' in createArgument)
+  ) {
+    return undefined
+  }
+  const { author, reader, text } = createArgument
+  if (typeof author !== 'string' || typeof reader !== 'string' || typeof text !== 'string') {
+    return undefined
+  }
+  return { author, reader, text }
 }
